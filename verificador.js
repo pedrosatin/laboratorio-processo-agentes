@@ -10,7 +10,7 @@ export const extrairJson = texto => {
   } catch {
     const inicio = semCerca.indexOf('{')
     const fim = semCerca.lastIndexOf('}')
-    if (inicio < 0 || fim <= inicio) throw new Error('Nenhum objeto JSON encontrado')
+    if (inicio < 0 || fim <= inicio) throw new Error('Não encontrei os dados em JSON na resposta copiada')
     return JSON.parse(semCerca.slice(inicio, fim + 1))
   }
 }
@@ -21,29 +21,29 @@ const tipoTarefa = tarefa =>
 
 export const validarSpec = spec => {
   const erros = []
-  if (!spec || typeof spec !== 'object') return ['spec não é um objeto']
-  if (typeof spec.requisito !== 'string' || spec.requisito === '') erros.push('spec sem requisito')
-  if (!Array.isArray(spec.criterios) || spec.criterios.length < 3) erros.push('spec precisa de pelo menos três critérios')
-  else if (spec.criterios.some(criterio => typeof criterio !== 'string')) erros.push('todo critério precisa ser texto')
-  if (!Array.isArray(spec.duvidas)) erros.push('spec sem a lista duvidas')
+  if (!spec || typeof spec !== 'object') return ['A resposta do spec precisa vir no formato JSON pedido nas instruções']
+  if (typeof spec.requisito !== 'string' || spec.requisito === '') erros.push('Falta o campo requisito na resposta do spec')
+  if (!Array.isArray(spec.criterios) || spec.criterios.length < 3) erros.push('O spec precisa escrever pelo menos três critérios')
+  else if (spec.criterios.some(criterio => typeof criterio !== 'string')) erros.push('Cada critério do spec precisa ser um texto')
+  if (!Array.isArray(spec.duvidas)) erros.push('Falta a lista duvidas na resposta do spec, mesmo que esteja vazia')
   return erros
 }
 
 export const validarProposta = proposta => {
-  if (!proposta || typeof proposta !== 'object') return ['proposta do coder não é um objeto']
-  return typeof proposta.codigo === 'string' && proposta.codigo.trim() !== '' ? [] : ['proposta sem o campo codigo']
+  if (!proposta || typeof proposta !== 'object') return ['A resposta do coder precisa vir no formato JSON pedido nas instruções']
+  return typeof proposta.codigo === 'string' && proposta.codigo.trim() !== '' ? [] : ['Falta o campo codigo preenchido na resposta do coder']
 }
 
 export const validarCasos = casos => {
-  if (!Array.isArray(casos)) return ['tester sem a lista casos']
+  if (!Array.isArray(casos)) return ['Falta a lista casos na resposta do tester']
   const erros = casos.length === 5 ? [] : [`o tester entregou ${casos.length} casos, e o processo pede exatamente cinco`]
   casos.forEach((caso, i) => {
     const rotulo = `caso ${i + 1}`
     if (typeof caso?.nome !== 'string') erros.push(`${rotulo} sem nome`)
     if (typeof caso?.criterio !== 'string') erros.push(`${rotulo} sem criterio`)
-    if (!Array.isArray(caso?.tarefas) || !caso.tarefas.every(tipoTarefa)) erros.push(`${rotulo} com tarefas fora do tipo Tarefa`)
+    if (!Array.isArray(caso?.tarefas) || !caso.tarefas.every(tipoTarefa)) erros.push(`${rotulo} tem tarefas fora do formato Tarefa pedido nas instruções`)
     if (typeof caso?.filtro?.estado !== 'string') erros.push(`${rotulo} sem filtro.estado`)
-    if ((caso?.esperadoIds === undefined) === (caso?.esperadoErro === undefined)) erros.push(`${rotulo} precisa de esperadoIds ou esperadoErro, só um dos dois`)
+    if ((caso?.esperadoIds === undefined) === (caso?.esperadoErro === undefined)) erros.push(`${rotulo} precisa informar esperadoIds ou esperadoErro. O tester deve preencher apenas um desses campos`)
   })
   return erros
 }
@@ -84,7 +84,7 @@ export const avaliarCaso = (filtrar, caso) => {
     const ids = saida.map(tarefa => tarefa?.id)
     if (!igual(ids, caso.esperadoIds)) return { ...base, aprovado: false, detalhe: `Esperava ids ${JSON.stringify(caso.esperadoIds)} e recebeu ${JSON.stringify(ids)}` }
     const preservados = saida.every(tarefa => caso.tarefas.some(original => igual(tarefa, original)))
-    return preservados ? { ...base, aprovado: true, detalhe: 'ok' } : { ...base, aprovado: false, detalhe: 'Objetos retornados diferem dos originais' }
+    return preservados ? { ...base, aprovado: true, detalhe: 'ok' } : { ...base, aprovado: false, detalhe: 'As tarefas devolvidas pelo código têm valores diferentes dos originais' }
   } catch (erro) {
     const mensagem = erro instanceof Error ? erro.message : String(erro)
     if (caso.esperadoErro === undefined) return { ...base, aprovado: false, detalhe: `Erro inesperado: ${mensagem}` }
@@ -106,19 +106,19 @@ const rastreabilidade = async ({ spec, casos }) => {
   const detalhes = []
   const ids = spec.criterios.map(idDoCriterio)
   spec.criterios.forEach((criterio, i) => {
-    if (!ids[i]) detalhes.push(`Critério sem ID no início: "${criterio.slice(0, 60)}"`)
+    if (!ids[i]) detalhes.push(`Critério sem identificador, como C1 ou C2, no início: "${criterio.slice(0, 60)}"`)
   })
   const validos = new Set(ids.filter(Boolean))
-  if (validos.size !== ids.filter(Boolean).length) detalhes.push('Há IDs de critério repetidos')
+  if (validos.size !== ids.filter(Boolean).length) detalhes.push('Há critérios com o mesmo identificador. Use um ID diferente para cada um')
   if (spec.criterios.length > 5) detalhes.push(`O spec tem ${spec.criterios.length} critérios e o tester entrega cinco casos`)
   const cobertos = new Set()
   casos.forEach(caso => {
     const id = idDoCriterio(caso.criterio)
-    if (!id || !validos.has(id)) detalhes.push(`Caso "${caso.nome}" não cita um ID de critério existente`)
+    if (!id || !validos.has(id)) detalhes.push(`Teste "${caso.nome}" precisa começar o campo criterio com um ID usado pelo spec`)
     else cobertos.add(id)
   })
   validos.forEach(id => {
-    if (!cobertos.has(id)) detalhes.push(`Critério ${id} sem caso de teste`)
+    if (!cobertos.has(id)) detalhes.push(`Nenhum teste confere o critério ${id}`)
   })
   return { gate: 'rastreabilidade', aprovado: detalhes.length === 0, detalhes }
 }
@@ -180,8 +180,8 @@ const mutantes = async ({ casos, dados, parametros, rodar }) => {
     gate: 'mutantes',
     aprovado: mortos >= parametros.minMutantesMortos,
     detalhes: [
-      `${mortos} de ${resultados.length} mutantes mortos, mínimo ${parametros.minMutantesMortos}`,
-      ...resultados.filter(resultado => !resultado.morto).map(resultado => `Sobreviveu: ${resultado.nome}`)
+      `Os testes detectaram o erro em ${mortos} de ${resultados.length} mutantes. O mínimo é ${parametros.minMutantesMortos}`,
+      ...resultados.filter(resultado => !resultado.morto).map(resultado => `Os testes não detectaram o erro em: ${resultado.nome}`)
     ]
   }
 }

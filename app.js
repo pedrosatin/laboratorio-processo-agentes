@@ -1,6 +1,6 @@
 import { dados } from './dados.js'
-import { cenarioDoRa } from './cenarios.js'
-import { lerEntrega, resumir, verificar } from './verificador.js'
+import { cenarioDoRa } from './cenarios.js?v=20261015-textos'
+import { lerEntrega, resumir, verificar } from './verificador.js?v=20261015-textos'
 import { tirarTipos } from './vendor/sucrase.mjs'
 
 const $ = id => document.getElementById(id)
@@ -31,17 +31,17 @@ const desenharCenario = () => {
   alvo.innerHTML = `
     <h3>Cenário ${c.numero}. ${escapar(c.titulo)}</h3>
     <p>${escapar(c.situacao)}</p>
-    <h4>Regras do processo</h4>
+    <h4>Regras que seus agentes precisam seguir</h4>
     <ol>${c.regras.map(regra => `<li>${escapar(regra)}</li>`).join('')}</ol>
     <h4>Materiais do projeto</h4>
-    <p>Na linha de base, nenhum agente recebe estes materiais.</p>
+    <p>Use estes materiais na etapa 4. Na primeira execução, nenhum agente recebe esses textos.</p>
     ${c.materiais.map(m => `
       <div class="campo-copia"><span>${escapar(m.titulo)}<br><code>${m.variavel}</code></span>
       <pre id="mat-${m.nome}">${escapar(dados.materiais[m.nome])}</pre>
       <button data-copiar="mat-${m.nome}">Copiar</button></div>`).join('')}
-    <h4>O que o verificador confere</h4>
+    <details><summary>Como o verificador confere essas regras</summary>
     <ul>${c.explicacaoGates.map(texto => `<li>${escapar(texto)}</li>`).join('')}
-      <li>Em todos os cenários: os casos do tester e a suíte de referência executados contra o código do coder.</li></ul>`
+      <li>Em todos os cenários, o código do coder passa pelos testes do tester e pelos sete testes de referência da página.</li></ul></details>`
   desenharReserva()
   desenharRodadas()
 }
@@ -87,7 +87,7 @@ const rodar = async (codigoTs, casos) => {
     const js = tirarTipos(codigoTs)
     return await naFila(() => rodarEmWorker(js, casos))
   } catch (erro) {
-    return resumir(casos.map(caso => ({ nome: caso.nome, criterio: caso.criterio, aprovado: false, detalhe: `Erro de sintaxe: ${erro.message}` })))
+    return resumir(casos.map(caso => ({ nome: caso.nome, criterio: caso.criterio, aprovado: false, detalhe: `O código tem um erro de escrita: ${erro.message}` })))
   }
 }
 
@@ -108,8 +108,8 @@ const tabelaSuite = (titulo, suite) => `
 const desenharResultado = (r, entrega) => {
   const alvo = $('resultado')
   if (r.etapa === 'spec' || r.etapa === 'formato') {
-    alvo.innerHTML = `<div class="alerta erro"><strong>Saída fora do formato esperado.</strong><ul>${r.erros.map(e => `<li>${escapar(e)}</li>`).join('')}</ul>
-      Confira se a instrução do agente ainda pede o formato JSON do final do prompt. A rodada foi registrada.</div>`
+    alvo.innerHTML = `<div class="alerta erro"><strong>A resposta dos agentes veio em um formato que o verificador não consegue usar.</strong><ul>${r.erros.map(e => `<li>${escapar(e)}</li>`).join('')}</ul>
+      Confira o final das instruções do agente. Preserve o pedido de resposta em JSON, o formato de dados usado pelo verificador. Esta tentativa ficou registrada.</div>`
     return
   }
   if (r.etapa === 'duvidas') {
@@ -119,9 +119,9 @@ const desenharResultado = (r, entrega) => {
   }
   const gatesHtml = r.gates.map(g => `<li><strong>${g.gate}</strong> ${selo(g.aprovado)}<ul>${g.detalhes.map(d => `<li>${escapar(d)}</li>`).join('')}</ul></li>`).join('')
   alvo.innerHTML = `
-    <div class="alerta ${r.aprovado ? 'ok' : 'erro'}"><strong>${r.aprovado ? 'Rodada aprovada: tester, referência e gates.' : 'Rodada reprovada em pelo menos um item.'}</strong>
-    ${r.falsoNegativo ? '<br>Falso negativo: os casos do tester aprovaram e a suíte de referência reprovou. Algum comportamento do pedido ficou sem caso.' : ''}</div>
-    <h4>Gates do cenário</h4><ul>${gatesHtml}</ul>
+    <div class="alerta ${r.aprovado ? 'ok' : 'erro'}"><strong>${r.aprovado ? 'A rodada passou nos testes e nas regras do cenário.' : 'Algum teste ou regra do cenário falhou. Confira os detalhes abaixo.'}</strong>
+    ${r.falsoNegativo ? '<br>Os testes do tester passaram, mas os testes de referência encontraram um problema. Algum comportamento do pedido ficou sem teste. Esse resultado é chamado de falso negativo.' : ''}</div>
+    <h4>Checagem das regras do cenário (gates)</h4><ul>${gatesHtml}</ul>
     ${tabelaSuite('Casos do tester', r.tester)}
     ${tabelaSuite('Suíte de referência', r.referencia)}
     <details><summary>Critérios do spec</summary><ol>${entrega.spec.criterios.map(c => `<li>${escapar(c)}</li>`).join('')}</ol></details>
@@ -171,7 +171,7 @@ const desenharRodadas = () => {
   const rodadas = rodadasDoCenario()
   $('tabela-rodadas').innerHTML = rodadas.length === 0
     ? '<p class="mudo">Nenhuma rodada verificada neste cenário.</p>'
-    : `<table><thead><tr><th>Rótulo</th><th>Via e modelo</th><th>Hora</th><th>Tester</th><th>Referência</th><th>Gates</th><th>Entrega</th></tr></thead><tbody>
+    : `<table><thead><tr><th>Rodada</th><th>Onde executou e modelo</th><th>Hora</th><th>Tester</th><th>Referência</th><th>Regras do cenário</th><th>Entrega</th></tr></thead><tbody>
       ${rodadas.map(r => `<tr><td>${r.rotulo}</td><td>${escapar(r.via)}, ${escapar(r.modelo)}</td><td>${r.hora}</td><td>${r.tester}</td><td>${r.referencia}${r.falsoNegativo ? ' <span class="selo aviso">falso negativo</span>' : ''}</td>
         <td>${situacao(r) || r.gates.map(g => `${g.gate} ${selo(g.aprovado)}`).join('<br>')}</td><td><code>${r.hash}</code></td></tr>`).join('')}
       </tbody></table>`
@@ -208,12 +208,12 @@ const desenharReserva = () => {
   $('reserva-agentes').innerHTML = ['spec', 'tester', 'coder'].map(agente => `
     <div class="agente" data-agente="${agente}">
       <h3>${agente}</h3>
-      <label style="display:flex">Instrução (System)<textarea rows="7" data-campo="instrucao">${escapar(r.instrucoes[agente])}</textarea></label>
-      <div class="materiais">Materiais recebidos:
+      <label style="display:flex">Instrução do agente (System)<textarea rows="7" data-campo="instrucao">${escapar(r.instrucoes[agente])}</textarea></label>
+      <div class="materiais">Materiais que este agente vai receber:
         ${nomes.length === 0 ? '<span class="mudo">digite o RA</span>' : nomes.map(nome => `<label><input type="checkbox" data-material="${nome}" ${r.materiais[agente].includes(nome) ? 'checked' : ''}>${nome}</label>`).join('')}
       </div>
       <div class="linha"><button data-prompt="${agente}">Copiar prompt completo</button>
-        ${agente === 'spec' ? '' : '<span class="mudo">precisa da resposta do spec</span>'}</div>
+        ${agente === 'spec' ? '' : '<span class="mudo">cole primeiro a resposta do spec</span>'}</div>
       <label style="display:flex">Resposta do modelo<textarea rows="5" data-campo="resposta">${escapar(r.respostas[agente] ?? '')}</textarea></label>
     </div>`).join('')
 }

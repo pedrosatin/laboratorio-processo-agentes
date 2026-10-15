@@ -4,11 +4,11 @@ export const cenarios = [
     numero: 1,
     titulo: 'Correção urgente em produção',
     digitos: [0, 4, 8],
-    situacao: 'A versão 1.4.0 de filtrarTarefas está em produção. O suporte abriu o chamado 4127: a busca por "revisar" não encontra "Revisar código". A correção sai hoje, e a equipe só aceita alterar o necessário para resolver o chamado.',
+    situacao: 'A função filtrarTarefas já está em uso na versão 1.4.0. O suporte abriu o chamado 4127 porque a busca por "revisar" não encontra "Revisar código". A correção precisa sair hoje. A equipe só aceita as mudanças necessárias para resolver esse erro.',
     regras: [
-      'A suíte do tester reproduz o defeito relatado. Pelo menos um caso falha na versão atual.',
-      'A correção parte do código atual e altera no máximo quatro linhas.',
-      'Os casos do tester e a suíte de referência aprovam a correção.'
+      'Pelo menos um dos testes do tester precisa encontrar o erro na versão atual do código.',
+      'O coder deve partir do código atual e alterar no máximo quatro linhas.',
+      'O código corrigido precisa passar nos testes do tester e nos testes de referência da página.'
     ],
     materiais: [
       { variavel: 'material_1', nome: 'relatoDoDefeito', titulo: 'Relato do chamado 4127' },
@@ -16,8 +16,8 @@ export const cenarios = [
     ],
     gates: ['regressao', 'mudanca-minima'],
     explicacaoGates: [
-      'regressao executa os cinco casos do tester na versão atual e exige pelo menos uma falha.',
-      'mudanca-minima compara a proposta com a versão atual. Conta linhas removidas mais linhas adicionadas, sem linhas vazias e comentários. O limite é 4.'
+      'A checagem regressao roda os cinco testes no código atual, que ainda tem o erro. Pelo menos um precisa falhar para mostrar que os testes detectam o problema.',
+      'A checagem mudanca-minima soma as linhas removidas e adicionadas ao código atual. O limite é quatro. Linhas vazias e comentários não contam.'
     ],
     parametros: { maxLinhasAlteradas: 4 }
   },
@@ -25,20 +25,20 @@ export const cenarios = [
     numero: 2,
     titulo: 'Rastreabilidade entre critérios e testes',
     digitos: [1, 5, 9],
-    situacao: 'O cliente audita cada entrega e exige ligar cada critério de aceite a um caso de teste e a um resultado. A política do cliente está no material do cenário.',
+    situacao: 'O cliente quer conferir se cada comportamento descrito pelo spec tem um teste e um resultado. Para isso, cada critério precisa de um identificador, como C1 ou C2. Leia a política do cliente no material abaixo.',
     regras: [
-      'Cada critério do spec começa com um ID C1, C2, sem repetição.',
+      'Cada critério do spec começa com um identificador, como C1 ou C2. Esses IDs não podem se repetir.',
       'O spec tem no máximo cinco critérios.',
-      'O campo criterio de cada caso começa com o ID que o caso verifica.',
-      'Todo critério tem pelo menos um caso.',
-      'Os casos do tester e a suíte de referência aprovam a proposta.'
+      'No campo criterio de cada teste, coloque primeiro o ID do critério que ele confere.',
+      'Todo critério precisa ter pelo menos um teste.',
+      'O código precisa passar nos testes do tester e nos testes de referência da página.'
     ],
     materiais: [
       { variavel: 'material_1', nome: 'politicaDeRastreabilidade', titulo: 'Política de rastreabilidade' }
     ],
     gates: ['rastreabilidade'],
     explicacaoGates: [
-      'rastreabilidade lê o ID no início de cada critério e de cada caso. Reprova critério sem ID, ID repetido, mais de cinco critérios, caso sem ID válido e critério sem caso.'
+      'A checagem rastreabilidade confere os IDs dos critérios e dos testes. Ela reprova se faltar um ID, houver ID repetido ou inválido, existir critério sem teste ou o spec escrever mais de cinco critérios.'
     ],
     parametros: {}
   },
@@ -46,18 +46,18 @@ export const cenarios = [
     numero: 3,
     titulo: 'Padrão de código da equipe',
     digitos: [2, 6],
-    situacao: 'O repositório da equipe tem revisão automática de código. O módulo que viola o padrão da equipe volta para o autor, e cada volta custa mais uma chamada ao modelo.',
+    situacao: 'A equipe usa uma revisão automática para conferir o padrão do código. Se alguma regra for desrespeitada, o código volta para correção. Cada nova tentativa exige outra consulta à IA.',
     regras: [
-      'A proposta segue as sete regras do padrão de código.',
-      'A primeira proposta do coder já passa na revisão.',
-      'Os casos do tester e a suíte de referência aprovam a proposta.'
+      'O código do coder precisa seguir as sete regras do material da equipe.',
+      'A primeira resposta do coder já precisa passar na revisão.',
+      'O código precisa passar nos testes do tester e nos testes de referência da página.'
     ],
     materiais: [
       { variavel: 'material_1', nome: 'padraoDeCodigo', titulo: 'Padrão de código da equipe' }
     ],
     gates: ['padrao-codigo'],
     explicacaoGates: [
-      'padrao-codigo verifica cada linha da proposta: class, ponto e vírgula no fim, let, var, any, for, while, push, splice, sort, reverse e o limite de 20 linhas de código.'
+      'A checagem padrao-codigo procura usos de class, let, var, any, for, while, push, splice, sort e reverse. Também confere ponto e vírgula no fim da linha e o limite de 20 linhas. As regras completas estão no material da equipe.'
     ],
     parametros: { maxLinhas: 20 }
   },
@@ -65,18 +65,18 @@ export const cenarios = [
     numero: 4,
     titulo: 'Qualidade dos testes medida por mutantes',
     digitos: [3, 7],
-    situacao: 'Em uma execução anterior, o tester aprovou 5 de 5 casos e a referência reprovou a proposta. Nenhum caso cobria maiúsculas e minúsculas. A equipe passou a medir a suíte do tester com sete mutantes, versões de filtrarTarefas com um defeito conhecido cada.',
+    situacao: 'Em uma execução anterior, os cinco testes do tester passaram, mas os testes de referência encontraram um erro. Faltava testar a diferença entre maiúsculas e minúsculas. Agora a equipe confere os testes usando sete versões de filtrarTarefas com erros conhecidos. Cada versão com erro é chamada de mutante.',
     regras: [
-      'Os cinco casos do tester matam pelo menos seis dos sete mutantes.',
-      'O tester continua sem acesso ao código da proposta e aos mutantes.',
-      'Os casos do tester e a suíte de referência aprovam a proposta.'
+      'Os cinco testes do tester precisam detectar o erro em pelo menos seis dos sete mutantes. Detectar esse erro é o que chamamos de matar um mutante.',
+      'O tester deve escrever os testes sem receber o código do coder nem o código dos mutantes.',
+      'O código precisa passar nos testes do tester e nos testes de referência da página.'
     ],
     materiais: [
       { variavel: 'material_1', nome: 'tecnicasDeTeste', titulo: 'Técnicas de projeto de casos de teste' }
     ],
     gates: ['mutantes'],
     explicacaoGates: [
-      'mutantes executa os cinco casos do tester em cada mutante. O mutante morre quando algum caso falha. O gate exige seis mortos e lista os sobreviventes.'
+      'A checagem mutantes roda os cinco testes em cada versão com erro. Se algum teste falhar, ele detectou o problema e o mutante morreu. Pelo menos seis precisam morrer. O resultado lista os sobreviventes, que os testes não conseguiram detectar.'
     ],
     parametros: { minMutantesMortos: 6 }
   }

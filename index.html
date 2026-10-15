@@ -13,7 +13,7 @@
   <div>
     <p class="curso">Tecnologias Emergentes · ESOFT8</p>
     <h1>Laboratório de processo com agentes</h1>
-    <p class="intro">Transfira as regras de um projeto para os agentes, execute o workflow no Dify e compare os resultados antes e depois.</p>
+    <p class="intro">Ajuste as instruções dos agentes no Dify e veja o que muda no código e nos testes.</p>
     <p class="metadados">A8 · Individual · 15/10/2026 · Entrega até o fim do encontro</p>
   </div>
   <div class="valor"><b>0,5</b>ponto</div>
@@ -33,83 +33,109 @@
 <section class="objetivo">
   <p class="marcador">O que você vai investigar</p>
   <h2>Regras do projeto, decisões dos agentes</h2>
-  <p>Os agentes spec, coder e tester já estão montados em um workflow do Dify, com instruções genéricas. Cada cenário descreve um projeto com regras de processo próprias. Você transfere as regras do seu cenário para os agentes, executa o fluxo antes e depois da alteração e mostra, com o resultado do verificador, o efeito de cada mudança.</p>
-  <p>O Dify só gera texto. Quem executa o código e os testes é o <a href="#verificador">verificador desta página</a>, que roda no seu navegador:</p>
+  <p>Você vai trabalhar com três agentes de IA já montados no Dify. Cada um tem uma tarefa:</p>
   <ul>
-    <li><strong>Casos do tester</strong>: os cinco casos que o tester escreveu, executados contra o código do coder. Verificação: o código cumpre a especificação?</li>
-    <li><strong>Suíte de referência</strong>: sete casos escritos a partir do pedido, que nenhum agente vê. Validação: o código atende ao pedido?</li>
-    <li><strong>Gate</strong>: critério de saída do seu cenário, verificado por código. A instrução orienta o modelo, que pode gerar uma resposta diferente a cada execução. O gate dá o mesmo veredito para a mesma entrada.</li>
+    <li>O <code>spec</code> lê o pedido e escreve o que o código precisa fazer.</li>
+    <li>O <code>coder</code> escreve o código a partir dessa descrição.</li>
+    <li>O <code>tester</code> escreve cinco testes para conferir o código.</li>
   </ul>
+  <p>Seu cenário traz regras de uma equipe. Você vai decidir o que acrescentar às instruções de cada agente e quais materiais ele precisa receber.</p>
+  <p>Primeiro, execute tudo como está. Depois, faça as alterações e execute de novo. O <a href="#verificador">verificador desta página</a> testa o resultado e mostra o que passou e o que falhou.</p>
 </section>
 
 <section id="cenario">
   <p class="marcador">Seu projeto</p>
   <h2>1. Seu cenário</h2>
-  <p>O cenário sai do último dígito do RA antes do hífen. RA 23182969-2 termina em 9 e fica com o cenário 2.</p>
+  <p>Digite seu RA. A página escolhe o cenário pelo último número antes do hífen. Por exemplo, o RA 23182969-2 usa o número 9 e recebe o cenário 2.</p>
   <label>RA <input id="ra" placeholder="23182969-2" autocomplete="off"></label>
   <div id="cenario-detalhe" class="cartao"><p class="mudo">Digite o RA para ver o cenário.</p></div>
 </section>
 
 <section id="dify">
   <p class="marcador">Preparação · 15 min</p>
-  <h2>2. Conta e workflow no Dify, 15 minutos</h2>
+  <h2>2. Preparar o Dify</h2>
+  <p>O Dify organiza os agentes em um fluxo, chamado <strong>workflow</strong>. Cada bloco desse fluxo é um <strong>nó</strong>. Você vai importar um arquivo com os blocos já montados.</p>
   <ol>
     <li>Abra <a href="https://cloud.dify.ai" target="_blank" rel="noopener">cloud.dify.ai</a> e entre com GitHub ou Google. O plano Sandbox é gratuito e não pede cartão.</li>
-    <li>Baixe o workflow: <a href="dify/a8-spec-coder-tester.yml" download>a8-spec-coder-tester.yml</a>.</li>
-    <li>No Studio, use <em>Importar DSL</em> (Import DSL file) e selecione o arquivo. Se o Dify pedir para instalar o plugin OpenAI, instale.</li>
-    <li>Abra os nós <code>spec</code>, <code>coder</code> e <code>tester</code> e confira o modelo <code>gpt-4o-mini</code>. Ele usa os créditos gratuitos do Sandbox. Cada execução completa faz três chamadas ao modelo.</li>
-    <li>Confira o fluxo: <code>spec</code> → <code>Ler especificação</code> → <code>Tem dúvidas?</code>. Com dúvidas, o fluxo para. Sem dúvidas, <code>tester</code> e <code>coder</code> recebem a especificação, e <code>Montar entrega</code> junta tudo.</li>
+    <li>Baixe o arquivo do fluxo: <a href="dify/a8-spec-coder-tester.yml" download>a8-spec-coder-tester.yml</a>.</li>
+    <li>No Studio, clique em Importar DSL (Import DSL file) e selecione o arquivo baixado. DSL é o nome que o Dify usa para esse arquivo de configuração.</li>
+    <li>Se aparecer um pedido para instalar o plugin OpenAI, instale. Esse complemento permite usar o modelo no Dify.</li>
+    <li>Clique em cada bloco dos agentes <code>spec</code>, <code>coder</code> e <code>tester</code>. Confira se o modelo escolhido é <code>gpt-4o-mini</code>. O modelo é a IA que responde ao agente. Ele usa os créditos gratuitos do Dify.</li>
+    <li>Confira os blocos na imagem abaixo. Depois do <code>spec</code>, os blocos <code>Ler especificação</code> e <code>Tem dúvidas?</code> conferem se ele deixou perguntas. Se houver dúvidas, o fluxo para. Caso contrário, <code>tester</code> e <code>coder</code> recebem a descrição do <code>spec</code>, chamada especificação. O bloco <code>Montar entrega</code> reúne as respostas.</li>
   </ol>
-  <p>Opcional: com o e-mail institucional, a conta pode ser verificada como estudante pelo <a href="educacao.html">Dify for Education</a>. O tutorial explica como ativar o ano com desconto usando um cartão virtual exclusivo e cancelar a renovação depois. A A8 não depende disso.</p>
-  <p>Não precisa de conta da OpenAI nem de chave: o modelo usa os créditos do próprio Dify. Se o Dify falhar (crédito, modelo ou acesso), siga pela <a href="#reserva">reserva sem Dify</a> e informe a via no formulário. A nota não muda pela via usada.</p>
+  <details><summary>Opcional: ativar o plano de estudante</summary>
+    <p>O <a href="educacao.html">tutorial Dify for Education</a> explica como verificar o e-mail institucional e ativar um ano com desconto. Ele inclui o uso de cartão virtual exclusivo e o cancelamento da renovação. Você pode fazer esta atividade só com o plano gratuito.</p>
+  </details>
+  <p>Você não precisa criar conta na OpenAI nem cadastrar uma chave de API. Uma execução completa faz três consultas à IA e usa os créditos do Dify. Se faltar crédito ou houver problema de acesso, siga pela <a href="#reserva">alternativa sem Dify</a> e registre o problema no formulário. Isso não reduz sua nota.</p>
   <figure><img src="evidencias/fluxo-importado.png" alt="Workflow importado no Dify com os nós spec, coder e tester" loading="lazy" onerror="this.parentElement.remove()"><figcaption>Workflow depois da importação.</figcaption></figure>
 </section>
 
 <section id="base">
   <p class="marcador">Primeira execução · 15 min</p>
-  <h2>3. Linha de base, 15 minutos</h2>
-  <p>Execute sem alterar nada. Clique em <em>Executar</em> (Run) no Dify e preencha:</p>
+  <h2>3. Fazer a primeira execução</h2>
+  <p>Essa primeira execução é a <strong>linha de base</strong>. Ela serve para comparar o resultado antes e depois das suas alterações. Mantenha as instruções originais dos agentes.</p>
+  <p>No Dify, clique em Executar (Run). Copie os textos abaixo para os campos Pedido e Respostas às dúvidas:</p>
   <div class="campo-copia"><span>Pedido</span><pre id="copia-pedido"></pre><button data-copiar="copia-pedido">Copiar</button></div>
   <div class="campo-copia"><span>Respostas às dúvidas</span><pre id="copia-respostas"></pre><button data-copiar="copia-respostas">Copiar</button></div>
-  <p>Deixe <code>material_1</code> e <code>material_2</code> vazios na linha de base. Nenhum nó recebe esses materiais ainda.</p>
-  <p>Ao terminar, na aba RESULT do painel de execução, use o botão de copiar e cole o texto inteiro no <a href="#verificador">verificador</a> com o rótulo <code>antes</code> e anote qual regra do cenário falhou.</p>
-  <p>Se a execução parar em <code>Parar com dúvidas</code>, leia as dúvidas e escreva a resposta no fim do campo Respostas, como faria a pessoa responsável pelo pedido. Execute de novo. Não mude o pedido.</p>
+  <p>Deixe <code>material_1</code> e <code>material_2</code> vazios nessa primeira execução. Os materiais do cenário entram só na próxima etapa.</p>
+  <p>Quando terminar, abra a aba RESULT do painel de execução e use o botão de copiar. Cole o resultado inteiro no <a href="#verificador">verificador</a> e selecione a rodada <code>antes</code>. Confira qual regra do cenário falhou.</p>
+  <p>Se o fluxo parar em <code>Parar com dúvidas</code>, leia as perguntas do agente. Acrescente suas respostas no fim do campo Respostas e execute de novo. Responda como a pessoa que pediu o código, mantendo o pedido original.</p>
   <figure><img src="evidencias/parou-com-duvidas.png" alt="Execução que parou no nó Parar com dúvidas" loading="lazy" onerror="this.parentElement.remove()"><figcaption>Execução que parou com dúvidas. A dúvida aparece no início do resultado.</figcaption></figure>
   <figure><img src="evidencias/execucao-entrega.png" alt="Resultado da execução no Dify com o campo entrega" loading="lazy" onerror="this.parentElement.remove()"><figcaption>Campo <code>entrega</code> no resultado da execução.</figcaption></figure>
 </section>
 
 <section id="transferir">
   <p class="marcador">Alteração e comparação · 35 min</p>
-  <h2>4. Transferir o processo, 35 minutos</h2>
-  <p>Para cada regra do seu cenário, decida onde ela fica.</p>
+  <h2>4. Ajustar as instruções dos agentes</h2>
+  <p>Leia as regras do cenário e decida como cada uma chega ao agente. Você pode mudar uma instrução ou acrescentar um material ao que ele recebe.</p>
   <table>
     <thead><tr><th>Local</th><th>Use quando</th><th>Como fazer no Dify</th></tr></thead>
     <tbody>
-      <tr><td>Instrução do agente</td><td>O agente precisa agir de outro jeito</td><td>Edite o prompt <em>System</em> do nó</td></tr>
-      <tr><td>Material no contexto</td><td>O agente precisa de um dado do projeto que hoje não recebe</td><td>Copie o material para <code>material_1</code> ou <code>material_2</code> ao executar e insira a variável no prompt <em>User</em> do nó, digitando <code>{</code> ou <code>/</code> no editor</td></tr>
-      <tr><td>Nada a alterar</td><td>O verificador já executa a regra</td><td>Registre no formulário qual gate ou suíte cobre a regra</td></tr>
+      <tr><td>Instrução do agente</td><td>O agente precisa agir de outro jeito</td><td>Clique no bloco do agente e edite System, o campo de instruções</td></tr>
+      <tr><td>Material recebido pelo agente</td><td>O agente precisa de um dado do projeto que hoje não recebe</td><td>Preencha <code>material_1</code> ou <code>material_2</code> e inclua esse campo em User, no bloco do agente. Veja os passos abaixo</td></tr>
+      <tr><td>Nada a alterar</td><td>O verificador já executa a regra</td><td>Registre no formulário qual verificação já confere essa regra</td></tr>
     </tbody>
   </table>
-  <p>Mantenha o tester sem acesso ao código do coder. Cada nó só enxerga as variáveis inseridas no próprio prompt.</p>
-  <p>Execute de novo e verifique com os rótulos <code>depois</code>, <code>depois-2</code> e <code>depois-3</code>. Use os detalhes do gate e dos casos que falharam para ajustar as instruções. São até três rodadas depois da linha de base.</p>
-  <p>Antes de cada nova rodada, anote o trecho alterado. O formulário pede o texto anterior e o novo de cada alteração.</p>
-  <figure><img src="evidencias/no-spec-prompt.png" alt="Painel do nó spec com os prompts System e User" loading="lazy" onerror="this.parentElement.remove()"><figcaption>Clique no nó para abrir o painel. A instrução fica em SYSTEM. Role até USER para inserir variáveis; o botão <code>{x}</code> do editor lista as variáveis disponíveis.</figcaption></figure>
+  <h3>Como fazer o agente receber um material</h3>
+  <ol>
+    <li>Copie o material do seu cenário para o campo indicado, <code>material_1</code> ou <code>material_2</code>, ao executar.</li>
+    <li>Clique no bloco do agente que precisa ler esse material e encontre User.</li>
+    <li>Digite <code>{</code> ou <code>/</code> no editor e selecione o campo do material. O botão <code>{x}</code> também mostra os campos disponíveis.</li>
+  </ol>
+  <p>Esses campos são as variáveis do fluxo. Preencher um material na entrada não faz todos os agentes receberem esse texto. Cada agente lê apenas o que foi incluído nas suas instruções.</p>
+  <p>Mantenha o <code>tester</code> sem acesso ao código do <code>coder</code>. Ele deve criar os testes a partir da especificação.</p>
+  <p>Faça até três execuções após as alterações. Registre-as como <code>depois</code>, <code>depois-2</code> e <code>depois-3</code>. Se alguma regra ou teste falhar, leia o motivo no verificador e ajuste a instrução antes de tentar de novo.</p>
+  <p>Antes de executar de novo, guarde o trecho original e o trecho que você alterou. Você vai precisar dos dois no formulário.</p>
+  <figure><img src="evidencias/no-spec-prompt.png" alt="Painel do nó spec com os prompts System e User" loading="lazy" onerror="this.parentElement.remove()"><figcaption>Clique no bloco do agente. Edite as instruções em SYSTEM e inclua os materiais em USER.</figcaption></figure>
 </section>
 
 <section id="verificador">
   <p class="marcador">Execução no navegador</p>
   <h2>Verificador</h2>
-  <p>Cole o campo <code>entrega</code> da execução. O código do coder roda em um worker do navegador, com prazo de 5 segundos por suíte.</p>
+  <p>O Dify gera as respostas dos agentes. Este verificador executa o código e os testes no seu navegador.</p>
+  <ol>
+    <li>Cole abaixo o resultado copiado do Dify, que contém o campo <code>entrega</code>. Você não precisa editar esse texto.</li>
+    <li>Escolha a rodada. Use <code>antes</code> na primeira execução e <code>depois</code> na primeira tentativa com alterações.</li>
+    <li>Confira onde executou e qual modelo usou. Clique em Verificar e registrar a rodada.</li>
+  </ol>
+  <details><summary>Como ler o resultado</summary>
+    <p>Os casos do tester são os cinco testes escritos pelo agente. Eles conferem se o código cumpre a especificação. Essa é a verificação.</p>
+    <p>A suíte de referência é um conjunto de sete testes preparados a partir do pedido original. Os agentes não veem esses testes. Eles conferem se o código atende ao pedido. Essa é a validação.</p>
+    <p>O gate é a checagem das regras do seu cenário, como o limite de linhas alteradas. Ele sempre dá o mesmo resultado para a mesma entrada. Já o agente pode responder de outro jeito a cada execução.</p>
+    <p>Se aparecer "falso negativo", o tester deixou passar um problema que os testes de referência encontraram.</p>
+    <p>Ao conferir cada teste, o verificador exige os IDs na ordem esperada e as tarefas com seus valores originais. A lista recebida pelo código também precisa continuar intacta.</p>
+    <p>O código roda em um Web Worker, uma execução separada dentro do navegador. Cada conjunto de testes tem um limite de cinco segundos.</p>
+  </details>
   <div class="linha">
-    <label>Rótulo
+    <label>Rodada
       <select id="rotulo">
         <option>antes</option><option>depois</option><option>depois-2</option><option>depois-3</option>
       </select>
     </label>
-    <label>Via
+    <label>Onde você executou
       <select id="via"><option value="dify">Dify</option><option value="reserva">Reserva com chat</option></select>
     </label>
-    <label>Modelo <input id="modelo" value="gpt-4o-mini"></label>
+    <label>Modelo usado <input id="modelo" value="gpt-4o-mini"></label>
   </div>
   <textarea id="entrega" rows="10" placeholder='{"spec": {...}, "proposta": {...}, "casos": {...}}'></textarea>
   <button id="verificar" class="primario">Verificar e registrar a rodada</button>
@@ -118,8 +144,8 @@
 
 <section id="rodadas">
   <p class="marcador">Registro e análise · 15 min</p>
-  <h2>5. Rodadas e entrega, 15 minutos</h2>
-  <p>As rodadas ficam guardadas neste navegador, separadas por RA. Repetir um rótulo substitui a rodada anterior com o mesmo rótulo.</p>
+  <h2>5. Registrar e entregar</h2>
+  <p>As execuções ficam salvas neste navegador, separadas por RA. Se verificar outra resposta com o mesmo nome de rodada, ela substitui o registro anterior.</p>
   <div id="tabela-rodadas"></div>
   <div class="linha">
     <button id="copiar-registro" class="primario">Copiar registro para o formulário</button>
@@ -127,8 +153,10 @@
   </div>
   <h3>Entrega</h3>
   <ol>
-    <li>No Studio, exporte o workflow final (menu do app, <em>Exportar DSL</em>), suba o arquivo no Google Drive e libere leitura para <code>pedro.satin@unicesumar.edu.br</code>.</li>
-    <li>Preencha o formulário da sua turma com o registro copiado acima, os trechos alterados e a análise.</li>
+    <li>No Studio, abra o menu do seu app e clique em Exportar DSL. Esse arquivo guarda o fluxo com suas alterações.</li>
+    <li>Envie o arquivo para o Google Drive e libere acesso de leitura para <code>pedro.satin@unicesumar.edu.br</code>.</li>
+    <li>Clique em Copiar registro para o formulário, acima desta lista.</li>
+    <li>Abra o formulário da sua turma. Cole o registro, o link do arquivo e os trechos que alterou. Responda às perguntas de análise com base no que aconteceu nas rodadas.</li>
   </ol>
   <div class="formularios" aria-label="Formulários de entrega">
     
@@ -138,27 +166,35 @@
   <table>
     <thead><tr><th>Item</th><th>Valor</th></tr></thead>
     <tbody>
-      <tr><td>Linha de base executada e verificada, com o registro da rodada <code>antes</code></td><td>0,10</td></tr>
-      <tr><td>Alterações nas instruções e nos materiais correspondem às regras do cenário, uma a uma</td><td>0,15</td></tr>
-      <tr><td>Rodada posterior com o gate do cenário aprovado</td><td>0,10</td></tr>
-      <tr><td>Análise das respostas 5, 6 e 7 do formulário apoiada no registro</td><td>0,15</td></tr>
+      <tr><td>Primeira execução conferida no verificador, com o registro da rodada <code>antes</code></td><td>0,10</td></tr>
+      <tr><td>Alterações nas instruções e nos materiais atendem às regras do cenário, uma a uma</td><td>0,15</td></tr>
+      <tr><td>Uma rodada após as alterações passa na checagem das regras do cenário, o gate</td><td>0,10</td></tr>
+      <tr><td>Respostas 5, 6 e 7 do formulário explicam os resultados com base no registro</td><td>0,15</td></tr>
     </tbody>
   </table>
-  <p>Sem gate aprovado em três rodadas, o item de 0,10 vale 0,05 quando a resposta 7 explica o detalhe do gate e a tentativa de correção. Falha de crédito ou de modelo registrada no formulário não reduz a nota quando a atividade continua pela reserva.</p>
+  <p>Se o gate continuar reprovado após três rodadas, você pode receber 0,05 dos 0,10 desse item. Para isso, explique na resposta 7 qual regra falhou e o que tentou corrigir. Se tiver problema de crédito ou de modelo, registre no formulário e continue pela alternativa sem Dify. Isso não reduz sua nota.</p>
 </section>
 
 <section id="reserva">
   <p class="marcador">Alternativa em caso de falha</p>
   <h2>Reserva sem Dify</h2>
-  <p>Use se a conta, o crédito ou o modelo do Dify falharem. Os prompts abaixo são os mesmos dos nós do workflow. Cole cada um em uma conversa nova do <a href="https://aistudio.google.com" target="_blank" rel="noopener">Google AI Studio</a> e cole a resposta de volta. Para transferir o processo, edite a instrução e marque os materiais de cada agente aqui na página.</p>
+  <p>Use esta alternativa se tiver problema de conta, crédito ou modelo no Dify. As instruções abaixo são as mesmas do fluxo.</p>
+  <ol>
+    <li>Comece pelo <code>spec</code>. Clique em Copiar prompt completo. Prompt é o texto que você envia à IA.</li>
+    <li>Abra uma conversa nova no <a href="https://aistudio.google.com" target="_blank" rel="noopener">Google AI Studio</a>, envie o texto e cole a resposta de volta no campo do agente.</li>
+    <li>Repita com <code>tester</code> e <code>coder</code>, cada um em uma conversa nova. Eles precisam da resposta do <code>spec</code>.</li>
+    <li>Para fazer as alterações do seu cenário, edite a instrução e marque quais materiais cada agente deve receber.</li>
+    <li>Com as três respostas preenchidas, clique em Montar entrega e levar ao verificador.</li>
+  </ol>
+  <p>Use a mesma comparação entre <code>antes</code> e <code>depois</code> e entregue pelo formulário da sua turma.</p>
   <div id="reserva-agentes"></div>
   <button id="montar-reserva" class="primario">Montar entrega e levar ao verificador</button>
 </section>
 </main>
 
 <footer>
-  <p>Tecnologias Emergentes em Engenharia de Software, ESOFT8. O verificador repete as regras do executor do laboratório: ids na ordem de retorno, lista de entrada intacta e objetos com os valores originais.</p>
+  <p>Tecnologias Emergentes em Engenharia de Software, ESOFT8.</p>
 </footer>
-<script type="module" src="app.js"></script>
+<script type="module" src="app.js?v=20261015-textos"></script>
 </body>
 </html>
