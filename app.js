@@ -87,7 +87,7 @@ const selo = (aprovado, textoOk = 'aprovado', textoErro = 'reprovado') =>
 const tabelaSuite = (titulo, suite) => `
   <h4>${titulo}: ${suite.aprovados}/${suite.total} ${selo(suite.aprovados === suite.total)}</h4>
   <table><thead><tr><th>Caso</th><th>Critério</th><th>Resultado</th></tr></thead><tbody>
-  ${suite.resultados.map(r => `<tr><td>${escapar(r.nome)}</td><td>${escapar(r.criterio)}</td><td>${r.aprovado ? selo(true, 'ok') : `${selo(false, 'falhou')} ${escapar(r.detalhe)}`}</td></tr>`).join('')}
+  ${suite.resultados.map(r => `<tr><td>${escapar(r.nome)}</td><td>${escapar(r.criterio)}</td><td>${r.aprovado ? selo(true, 'ok') : `${selo(false, 'ok', 'falhou')} ${escapar(r.detalhe)}`}</td></tr>`).join('')}
   </tbody></table>`
 
 const desenharResultado = (r, entrega) => {
