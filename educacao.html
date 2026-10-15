@@ -19,13 +19,14 @@
   <a href="index.html">Voltar à atividade A8</a>
   <a href="#ganho">O que muda</a>
   <a href="#passos">Passo a passo</a>
+  <a href="#renovacao">Cancelar renovação</a>
   <a href="#problemas">Problemas</a>
 </nav>
 
 <main>
 <section id="ganho">
   <h2>O que a verificação muda</h2>
-  <p>A verificação libera o plano Professional do Dify por um ano, sem custo. Os créditos de modelo continuam os mesmos do plano gratuito: 200 no total, sem renovação mensal.</p>
+  <p>A verificação permite ativar o plano Professional anual do Dify com desconto de 100%. A ativação depende de concluir o checkout da etapa 6. Os créditos de modelo continuam os mesmos do plano gratuito: 200 no total, sem renovação mensal.</p>
   <table>
     <thead><tr><th>Item</th><th>Sandbox, gratuito</th><th>Education</th></tr></thead>
     <tbody>
@@ -69,7 +70,23 @@
   <h3>6. Checkout do desconto, opcional</h3>
   <p><em>Use education discount</em> abre o checkout do Stripe com o plano Professional anual, cupom de 100% e total de R$ 0,00. O checkout pede cartão de crédito mesmo com valor zero, e o texto da página autoriza cobranças futuras "until you cancel".</p>
   <figure><img src="evidencias/educacao-checkout.png" alt="Checkout do Stripe com total zero e pedido de cartão" loading="lazy"><figcaption>Checkout com total R$ 0,00 e campos de cartão. O código do cupom foi ocultado na imagem.</figcaption></figure>
-  <div class="alerta erro">Não cadastre cartão para a disciplina. Pare na etapa 5. A atividade usa o plano Sandbox, e a verificação não muda os créditos.</div>
+    <div class="alerta">A ativação do plano anual é opcional. Quem preferir continuar sem cadastrar cartão pode usar o Sandbox e fazer a atividade normalmente.</div>
+  <ol>
+    <li>No aplicativo do seu banco, crie um <strong>cartão virtual exclusivo para o Dify</strong>. Se o banco oferecer limite próprio para esse cartão, configure um limite baixo ou zerado, conforme as opções disponíveis. Alguns cartões virtuais compartilham o limite do cartão principal.</li>
+    <li>No checkout, confira o plano <strong>Professional anual</strong>, o desconto de <strong>100%</strong> e o <strong>total a pagar de R$ 0,00</strong> antes de confirmar. Se aparecer valor a pagar, pare e confira o benefício.</li>
+    <li>Depois que a ativação for confirmada, <strong>cancele a renovação da assinatura imediatamente</strong>, seguindo a etapa 7. O acesso permanece até o fim do período anual ativado, conforme a regra de cancelamento do Dify.</li>
+  </ol>
+  <p>O benefício vale para o Professional anual. Confira as condições em <a href="https://www.dify.ai/education" target="_blank" rel="noopener">Dify for Education</a>. A regra de permanência do acesso está na seção 3.3.4 dos <a href="https://www.dify.ai/legal/terms-of-service" target="_blank" rel="noopener">Termos de serviço</a>.</p>
+
+  <h3 id="renovacao">7. Cancelar a renovação e manter o ano ativo</h3>
+  <ol>
+    <li>Volte ao Dify e abra <strong>Settings → Billing → Manage Billing and Subscriptions</strong>.</li>
+    <li>No portal de assinatura, escolha cancelar a assinatura ou a renovação e conclua as confirmações. Confira se a tela informa o cancelamento <strong>ao fim do período atual</strong>.</li>
+    <li>Confirme que a renovação foi cancelada e anote a <strong>data final do acesso</strong> exibida. Guarde uma captura ou o e-mail de confirmação para consultar depois.</li>
+  </ol>
+  <p>Segundo os <a href="https://www.dify.ai/legal/terms-of-service" target="_blank" rel="noopener">Termos de serviço, seções 3.1.5, 3.3.4 e 3.3.5</a>, a assinatura renova automaticamente enquanto não for cancelada. O cancelamento impede a próxima renovação e mantém o acesso ao plano até o fim do período vigente. O caminho do menu está na <a href="https://dify.ai/pricing/dify-cloud" target="_blank" rel="noopener">FAQ oficial, em "How do I cancel my paid plan?"</a>.</p>
+  <div class="alerta"><strong>Cancelar a renovação é o passo que impede a próxima renovação anual.</strong> Bloquear ou excluir o cartão virtual não cancela a assinatura. Use o cartão exclusivo como proteção adicional e confira a confirmação do cancelamento no Dify.</div>
+  <p class="mudo">As etapas de ativação com cartão e cancelamento seguem as referências oficiais consultadas em 15/10/2026. As capturas acima mostram o fluxo até o checkout; essas duas operações não foram executadas na conta do professor.</p>
 </section>
 
 <section id="problemas">
@@ -86,6 +103,8 @@
   <h3>Fontes</h3>
   <ul>
     <li><a href="https://dify.ai/education" target="_blank" rel="noopener">Dify for Education</a>: elegibilidade e créditos.</li>
+    <li><a href="https://www.dify.ai/legal/terms-of-service" target="_blank" rel="noopener">Termos de serviço, seções 3.1.5, 3.3.4 e 3.3.5</a>: renovação automática, cancelamento e acesso até o fim do período.</li>
+    <li><a href="https://dify.ai/pricing/dify-cloud" target="_blank" rel="noopener">Dify Cloud Pricing, FAQ</a>: caminho para gerenciar e cancelar a assinatura.</li>
     <li><a href="https://docs.dify.ai/en/cloud/use-dify/workspace/subscription-management" target="_blank" rel="noopener">Subscription management</a>: passos de verificação, desconto e verificação anual.</li>
   </ul>
   <p class="mudo">Telas capturadas no Dify Cloud em 15/10/2026.</p>
