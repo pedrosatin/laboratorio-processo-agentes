@@ -1,0 +1,63 @@
+:root {
+  --fundo: #fafaf7;
+  --texto: #1d1d1f;
+  --mudo: #6b6b70;
+  --borda: #d9d9d4;
+  --cartao: #ffffff;
+  --destaque: #5b3fd1;
+  --ok: #1f7a3d;
+  --ok-fundo: #e5f4ea;
+  --erro: #b3261e;
+  --erro-fundo: #fbe9e7;
+  --aviso: #8a5a00;
+  --aviso-fundo: #fff4d6;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.55;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--fundo); color: var(--texto); }
+header, main, footer, nav { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+header { padding-top: 28px; }
+h1 { margin: 0 0 4px; font-size: 1.8rem; }
+h2 { margin-top: 0; font-size: 1.35rem; }
+h3 { font-size: 1.05rem; margin-bottom: 6px; }
+nav { display: flex; flex-wrap: wrap; gap: 6px 14px; padding-top: 6px; padding-bottom: 14px; border-bottom: 1px solid var(--borda); position: sticky; top: 0; background: var(--fundo); z-index: 2; }
+nav a { color: var(--destaque); text-decoration: none; font-size: .92rem; }
+section { padding: 22px 0; border-bottom: 1px solid var(--borda); }
+footer { color: var(--mudo); font-size: .85rem; padding-bottom: 40px; }
+a { color: var(--destaque); }
+code, pre, textarea { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; font-size: .86rem; }
+code { background: #efeee9; padding: 1px 5px; border-radius: 4px; }
+pre { background: #f2f1ec; border: 1px solid var(--borda); border-radius: 6px; padding: 10px; white-space: pre-wrap; word-break: break-word; margin: 6px 0; max-height: 320px; overflow: auto; }
+table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: .92rem; }
+th, td { border: 1px solid var(--borda); padding: 6px 8px; text-align: left; vertical-align: top; }
+th { background: #efeee9; }
+.cartao { background: var(--cartao); border: 1px solid var(--borda); border-radius: 8px; padding: 14px 16px; margin-top: 12px; }
+.mudo { color: var(--mudo); }
+label { display: inline-flex; flex-direction: column; gap: 3px; font-size: .88rem; color: var(--mudo); margin-right: 12px; }
+input, select { font: inherit; color: var(--texto); padding: 6px 8px; border: 1px solid var(--borda); border-radius: 6px; background: #fff; min-width: 160px; }
+textarea { width: 100%; padding: 8px; border: 1px solid var(--borda); border-radius: 6px; margin: 10px 0; background: #fff; }
+button { font: inherit; padding: 7px 14px; border-radius: 6px; border: 1px solid var(--borda); background: #fff; cursor: pointer; }
+button.primario { background: var(--destaque); border-color: var(--destaque); color: #fff; }
+button:disabled { opacity: .6; cursor: wait; }
+.linha { display: flex; flex-wrap: wrap; align-items: end; gap: 8px; margin: 8px 0; }
+.campo-copia { display: grid; grid-template-columns: 170px 1fr auto; gap: 8px; align-items: start; margin: 8px 0; }
+.campo-copia span { font-weight: 600; padding-top: 8px; }
+.selo { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: .82rem; font-weight: 600; }
+.selo.ok { background: var(--ok-fundo); color: var(--ok); }
+.selo.erro { background: var(--erro-fundo); color: var(--erro); }
+.selo.aviso { background: var(--aviso-fundo); color: var(--aviso); }
+.alerta { border-left: 4px solid var(--aviso); background: var(--aviso-fundo); padding: 8px 12px; border-radius: 4px; margin: 10px 0; }
+.alerta.erro { border-color: var(--erro); background: var(--erro-fundo); }
+.alerta.ok { border-color: var(--ok); background: var(--ok-fundo); }
+figure { margin: 14px 0; }
+figure img { max-width: 100%; border: 1px solid var(--borda); border-radius: 6px; }
+figcaption { color: var(--mudo); font-size: .85rem; }
+details { margin: 10px 0; }
+summary { cursor: pointer; color: var(--destaque); }
+.agente { border: 1px solid var(--borda); border-radius: 8px; padding: 12px; margin: 12px 0; background: #fff; }
+.agente h3 { margin-top: 0; }
+.materiais { display: flex; gap: 14px; flex-wrap: wrap; margin: 6px 0; }
+.materiais label { flex-direction: row; align-items: center; gap: 6px; color: var(--texto); }
+.materiais input { min-width: 0; }
+@media (max-width: 640px) { .campo-copia { grid-template-columns: 1fr; } }
