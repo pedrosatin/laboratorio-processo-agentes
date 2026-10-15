@@ -27,7 +27,6 @@
   <a href="#verificador"><b>✓</b> Verificador</a>
   <a href="#rodadas"><b>5</b> Entrega</a>
   <a href="#reserva" class="atalho-reserva">Reserva com chat</a>
-  <a href="plano-b.html" class="atalho-reserva">Plano B sem conta</a>
 </nav>
 
 <main>
@@ -67,7 +66,7 @@
   <details><summary>Opcional: ativar o plano de estudante</summary>
     <p>O <a href="educacao.html">tutorial Dify for Education</a> explica como verificar o e-mail institucional e ativar um ano com desconto. Ele inclui o uso de cartão virtual exclusivo e o cancelamento da renovação. Você pode fazer esta atividade só com o plano gratuito.</p>
   </details>
-  <p>Você não precisa criar conta na OpenAI nem cadastrar uma chave de API. Uma execução completa faz três consultas à IA e usa os créditos do Dify. Se faltar crédito ou houver problema de acesso, use a <a href="#reserva">reserva com chat</a> ou o <a href="plano-b.html">plano B sem conta</a> e registre o problema no formulário. Isso não reduz sua nota.</p>
+  <p>Você não precisa criar conta na OpenAI nem cadastrar uma chave de API. Uma execução completa faz três consultas à IA e usa os créditos do Dify. Se faltar crédito ou houver problema de acesso, use a <a href="#reserva">reserva com chat</a> e registre o problema no formulário. Isso não reduz sua nota.</p>
   <figure><img src="evidencias/fluxo-importado.png" alt="Workflow importado no Dify com os nós spec, coder e tester" loading="lazy" onerror="this.parentElement.remove()"><figcaption>Workflow depois da importação.</figcaption></figure>
 </section>
 
@@ -146,7 +145,7 @@
 <section id="rodadas">
   <p class="marcador">Registro e análise · 15 min</p>
   <h2>5. Registrar e entregar</h2>
-  <p>As execuções ficam salvas neste navegador, separadas por RA. Se verificar outra resposta com o mesmo nome de rodada, ela substitui o registro anterior.</p>
+  <p>RA, entrega colada, opções do verificador, resultado da última checagem, reserva com chat e rodadas ficam salvos neste navegador. As rodadas são separadas por RA. Se verificar outra resposta com o mesmo nome de rodada, ela substitui o registro anterior. Recarregar a página ou fechar a aba não apaga esses dados.</p>
   <div id="tabela-rodadas"></div>
   <div class="linha">
     <button id="copiar-registro" class="primario">Copiar registro para o formulário</button>
@@ -173,13 +172,13 @@
       <tr><td>Respostas 5, 6 e 7 do formulário explicam os resultados com base no registro</td><td>0,15</td></tr>
     </tbody>
   </table>
-  <p>Se o gate continuar reprovado após três rodadas, você pode receber 0,05 dos 0,10 desse item. Para isso, explique na resposta 7 qual regra falhou e o que tentou corrigir. Se tiver problema de crédito ou de modelo, registre no formulário e continue pela <a href="#reserva">reserva com chat</a> ou pelo <a href="plano-b.html">plano B sem conta</a>. Isso não reduz sua nota.</p>
+  <p>Se o gate continuar reprovado após três rodadas, você pode receber 0,05 dos 0,10 desse item. Para isso, explique na resposta 7 qual regra falhou e o que tentou corrigir. Se tiver problema de crédito ou de modelo, registre no formulário e continue pela <a href="#reserva">reserva com chat</a>. Isso não reduz sua nota.</p>
 </section>
 
 <section id="reserva">
   <p class="marcador">Alternativa em caso de falha</p>
   <h2>Reserva com chat</h2>
-  <p>Use esta alternativa se tiver problema de conta, crédito ou modelo no Dify, mas ainda conseguir um chat gratuito. As instruções abaixo são as mesmas do fluxo. Se nem o chat funcionar, vá para o <a href="plano-b.html">plano B sem conta</a>.</p>
+  <p>Use esta alternativa se tiver problema de conta, crédito ou modelo no Dify, mas ainda conseguir um chat gratuito. As instruções abaixo são as mesmas do fluxo.</p>
   <ol>
     <li>Comece pelo <code>spec</code>. Clique em Copiar prompt completo. Prompt é o texto que você envia à IA.</li>
     <li>Abra uma conversa nova no <a href="https://aistudio.google.com" target="_blank" rel="noopener">Google AI Studio</a>, envie o texto e cole a resposta de volta no campo do agente.</li>
@@ -196,6 +195,6 @@
 <footer>
   <p>Tecnologias Emergentes em Engenharia de Software, ESOFT8.</p>
 </footer>
-<script type="module" src="app.js?v=20261015-textos"></script>
+<script type="module" src="app.js?v=20261015-export"></script>
 </body>
 </html>

@@ -15,6 +15,28 @@ const guardado = (chave, padrao) => {
 const guardar = (chave, valor) => localStorage.setItem(chave, JSON.stringify(valor))
 
 const estado = { cenario: undefined }
+const CHAVE_RASCUNHO = 'a8-rascunho'
+
+const salvarRascunho = () => {
+  guardar(CHAVE_RASCUNHO, {
+    entrega: $('entrega').value,
+    rotulo: $('rotulo').value,
+    via: $('via').value,
+    modelo: $('modelo').value,
+    resultadoHtml: $('resultado').innerHTML
+  })
+}
+
+const restaurarRascunho = () => {
+  const r = guardado(CHAVE_RASCUNHO, {})
+  if (typeof r.entrega === 'string') $('entrega').value = r.entrega
+  if (typeof r.rotulo === 'string' && [...$('rotulo').options].some(o => o.value === r.rotulo || o.text === r.rotulo)) {
+    $('rotulo').value = r.rotulo
+  }
+  if (typeof r.via === 'string') $('via').value = r.via
+  if (typeof r.modelo === 'string') $('modelo').value = r.modelo
+  if (typeof r.resultadoHtml === 'string' && r.resultadoHtml !== '') $('resultado').innerHTML = r.resultadoHtml
+}
 
 // Cenário pelo RA
 const desenharCenario = () => {
@@ -82,9 +104,27 @@ const naFila = tarefa => {
   return proxima
 }
 
+// O Dify às vezes devolve o código sem `export` ou dentro de cerca Markdown.
+// O worker carrega o módulo por import(), então filtrarTarefas precisa ser exportada.
+const limparCodigo = codigoTs => String(codigoTs ?? '')
+  .replace(/```(?:typescript|ts|javascript|js)?\s*/gi, '')
+  .replace(/```/g, '')
+  .trim()
+
+const garantirExportFiltrar = js => {
+  if (/\bexport\s+(?:async\s+)?(?:function\s+filtrarTarefas\b|(?:const|let|var)\s+filtrarTarefas\b)/.test(js)) return js
+  if (/(?:^|\n)(?:async\s+)?function\s+filtrarTarefas\b/.test(js)) {
+    return js.replace(/(^|\n)((?:async\s+)?function\s+filtrarTarefas\b)/, '$1export $2')
+  }
+  if (/(?:^|\n)(?:const|let|var)\s+filtrarTarefas\b/.test(js)) {
+    return js.replace(/(^|\n)((?:const|let|var)\s+filtrarTarefas\b)/, '$1export $2')
+  }
+  return `${js}\nexport { filtrarTarefas }\n`
+}
+
 const rodar = async (codigoTs, casos) => {
   try {
-    const js = tirarTipos(codigoTs)
+    const js = garantirExportFiltrar(tirarTipos(limparCodigo(codigoTs)))
     return await naFila(() => rodarEmWorker(js, casos))
   } catch (erro) {
     return resumir(casos.map(caso => ({ nome: caso.nome, criterio: caso.criterio, aprovado: false, detalhe: `O código tem um erro de escrita: ${erro.message}` })))
@@ -143,7 +183,8 @@ const verificarEntrega = async () => {
     desenharResultado(r, entrega)
     const rodada = {
       rotulo: $('rotulo').value, via: $('via').value, modelo: $('modelo').value.trim(),
-      hora: new Date().toLocaleString('pt-BR'), hash: await resumoHash(texto), cenario: estado.cenario.numero, ra: $('ra').value.trim(),
+      hora: new Date().toLocaleString('pt-BR'), hash: await resumoHash(texto), entrega: texto,
+      cenario: estado.cenario.numero, ra: $('ra').value.trim(),
       etapa: r.etapa, duvidas: r.duvidas ?? [], erros: r.erros ?? [],
       tester: r.tester ? `${r.tester.aprovados}/${r.tester.total}` : '-',
       referencia: r.referencia ? `${r.referencia.aprovados}/${r.referencia.total}` : '-',
@@ -153,8 +194,10 @@ const verificarEntrega = async () => {
     const rodadas = guardado('a8-rodadas', []).filter(x => !(x.rotulo === rodada.rotulo && x.cenario === rodada.cenario && x.ra === rodada.ra))
     guardar('a8-rodadas', [...rodadas, rodada])
     desenharRodadas()
+    salvarRascunho()
   } catch (erro) {
     $('resultado').innerHTML = `<div class="alerta erro">Não consegui ler a entrega: ${escapar(erro.message)}. Copie o campo <code>entrega</code> inteiro, do primeiro <code>{</code> ao último <code>}</code>.</div>`
+    salvarRascunho()
   } finally {
     botao.disabled = false
   }
@@ -275,10 +318,17 @@ $('montar-reserva').addEventListener('click', () => {
   $('entrega').value = JSON.stringify({ spec: r.respostas.spec ?? '', proposta: r.respostas.coder ?? '', casos: r.respostas.tester ?? '' })
   $('via').value = 'reserva'
   $('modelo').value = 'gemini (AI Studio)'
+  salvarRascunho()
   location.hash = '#verificador'
 })
+
+for (const id of ['entrega', 'rotulo', 'via', 'modelo']) {
+  $(id).addEventListener('input', salvarRascunho)
+  $(id).addEventListener('change', salvarRascunho)
+}
 
 $('copia-pedido').textContent = dados.pedido
 $('copia-respostas').textContent = dados.respostas
 $('ra').value = localStorage.getItem('a8-ra') ?? ''
+restaurarRascunho()
 desenharCenario()
