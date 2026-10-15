@@ -143,14 +143,14 @@ const verificarEntrega = async () => {
     desenharResultado(r, entrega)
     const rodada = {
       rotulo: $('rotulo').value, via: $('via').value, modelo: $('modelo').value.trim(),
-      hora: new Date().toLocaleString('pt-BR'), hash: await resumoHash(texto), cenario: estado.cenario.numero,
+      hora: new Date().toLocaleString('pt-BR'), hash: await resumoHash(texto), cenario: estado.cenario.numero, ra: $('ra').value.trim(),
       etapa: r.etapa, duvidas: r.duvidas ?? [], erros: r.erros ?? [],
       tester: r.tester ? `${r.tester.aprovados}/${r.tester.total}` : '-',
       referencia: r.referencia ? `${r.referencia.aprovados}/${r.referencia.total}` : '-',
       falhasReferencia: r.referencia ? r.referencia.resultados.filter(x => !x.aprovado).map(x => x.nome) : [],
       gates: r.gates ?? [], falsoNegativo: r.falsoNegativo ?? false, aprovado: r.aprovado ?? false
     }
-    const rodadas = guardado('a8-rodadas', []).filter(x => !(x.rotulo === rodada.rotulo && x.cenario === rodada.cenario))
+    const rodadas = guardado('a8-rodadas', []).filter(x => !(x.rotulo === rodada.rotulo && x.cenario === rodada.cenario && x.ra === rodada.ra))
     guardar('a8-rodadas', [...rodadas, rodada])
     desenharRodadas()
   } catch (erro) {
@@ -162,7 +162,7 @@ const verificarEntrega = async () => {
 
 const ordem = ['antes', 'depois', 'depois-2', 'depois-3']
 const rodadasDoCenario = () => guardado('a8-rodadas', [])
-  .filter(r => r.cenario === estado.cenario?.numero)
+  .filter(r => r.cenario === estado.cenario?.numero && r.ra === $('ra').value.trim())
   .sort((a, b) => ordem.indexOf(a.rotulo) - ordem.indexOf(b.rotulo))
 
 const situacao = r => r.etapa === 'duvidas' ? 'parou com dúvidas' : r.etapa === 'verificado' ? '' : 'fora do formato'
