@@ -14,3 +14,6 @@ self.onmessage = async ({ data }) => {
     URL.revokeObjectURL(url)
   }
 }
+
+// Avisa a página que o worker carregou. O prazo de execução começa depois deste aviso
+self.postMessage({ pronto: true })

@@ -46,31 +46,46 @@ const desenharCenario = () => {
   desenharRodadas()
 }
 
-// Execução do código do coder em worker, com prazo
+// Execução do código do coder em worker. O prazo conta a partir do carregamento do worker
 const rodarEmWorker = (js, casos) => new Promise(resolver => {
   const worker = new Worker(new URL('./executar.worker.js', import.meta.url), { type: 'module' })
   const falhar = detalhe => resolver(resumir(casos.map(caso => ({ nome: caso.nome, criterio: caso.criterio, aprovado: false, detalhe }))))
-  const prazo = setTimeout(() => {
+  const estado = { prazo: undefined }
+  const encerrar = () => {
+    clearTimeout(estado.prazo)
     worker.terminate()
-    falhar('Tempo esgotado, 5 segundos')
-  }, 5000)
+  }
   worker.onmessage = ({ data }) => {
-    clearTimeout(prazo)
-    worker.terminate()
+    if (data.pronto) {
+      estado.prazo = setTimeout(() => {
+        encerrar()
+        falhar('Tempo esgotado, 5 segundos')
+      }, 5000)
+      worker.postMessage({ js, casos })
+      return
+    }
+    encerrar()
     if (data.erro) falhar(`Falha ao carregar o código: ${data.erro}`)
     else resolver(resumir(data.resultados))
   }
   worker.onerror = evento => {
-    clearTimeout(prazo)
-    worker.terminate()
+    encerrar()
     falhar(`Falha ao carregar o código: ${evento.message ?? 'erro de sintaxe'}`)
   }
-  worker.postMessage({ js, casos })
 })
+
+// Uma suíte por vez, para não disputar CPU e rede com vários workers
+const fila = { ultima: Promise.resolve() }
+const naFila = tarefa => {
+  const proxima = fila.ultima.then(tarefa, tarefa)
+  fila.ultima = proxima
+  return proxima
+}
 
 const rodar = async (codigoTs, casos) => {
   try {
-    return await rodarEmWorker(tirarTipos(codigoTs), casos)
+    const js = tirarTipos(codigoTs)
+    return await naFila(() => rodarEmWorker(js, casos))
   } catch (erro) {
     return resumir(casos.map(caso => ({ nome: caso.nome, criterio: caso.criterio, aprovado: false, detalhe: `Erro de sintaxe: ${erro.message}` })))
   }
