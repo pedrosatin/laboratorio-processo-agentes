@@ -1,4 +1,6 @@
-# A8. Processo de software nos agentes
+# Laboratório de processo com agentes
+
+[Abrir o laboratório](https://pedrosatin.github.io/laboratorio-processo-agentes/).
 
 Página da atividade A8 de Tecnologias Emergentes em Engenharia de Software (ESOFT8), 15/10/2026.
 

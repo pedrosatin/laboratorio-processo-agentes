@@ -1,10 +1,10 @@
 :root {
-  --fundo: #fafaf7;
-  --texto: #1d1d1f;
-  --mudo: #6b6b70;
-  --borda: #d9d9d4;
+  --fundo: #f3f1eb;
+  --texto: #17201d;
+  --mudo: #5d6964;
+  --borda: #d8ddd8;
   --cartao: #ffffff;
-  --destaque: #5b3fd1;
+  --destaque: #0b6e5b;
   --ok: #1f7a3d;
   --ok-fundo: #e5f4ea;
   --erro: #b3261e;
@@ -27,11 +27,11 @@ section { padding: 22px 0; border-bottom: 1px solid var(--borda); }
 footer { color: var(--mudo); font-size: .85rem; padding-bottom: 40px; }
 a { color: var(--destaque); }
 code, pre, textarea { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; font-size: .86rem; }
-code { background: #efeee9; padding: 1px 5px; border-radius: 4px; }
-pre { background: #f2f1ec; border: 1px solid var(--borda); border-radius: 6px; padding: 10px; white-space: pre-wrap; word-break: break-word; margin: 6px 0; max-height: 320px; overflow: auto; }
+code { background: #e8f3ef; padding: 1px 5px; border-radius: 4px; }
+pre { background: #f7f9f6; border: 1px solid var(--borda); border-radius: 6px; padding: 10px; white-space: pre-wrap; word-break: break-word; margin: 6px 0; max-height: 320px; overflow: auto; }
 table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: .92rem; }
 th, td { border: 1px solid var(--borda); padding: 6px 8px; text-align: left; vertical-align: top; }
-th { background: #efeee9; }
+th { background: #e8f3ef; }
 .cartao { background: var(--cartao); border: 1px solid var(--borda); border-radius: 8px; padding: 14px 16px; margin-top: 12px; }
 .mudo { color: var(--mudo); }
 label { display: inline-flex; flex-direction: column; gap: 3px; font-size: .88rem; color: var(--mudo); margin-right: 12px; }
@@ -61,3 +61,75 @@ summary { cursor: pointer; color: var(--destaque); }
 .materiais label { flex-direction: row; align-items: center; gap: 6px; color: var(--texto); }
 .materiais input { min-width: 0; }
 @media (max-width: 640px) { .campo-copia { grid-template-columns: 1fr; } }
+
+/* Estrutura compartilhada com os laboratórios da disciplina. */
+html { scroll-behavior: smooth; scroll-padding-top: 110px; }
+body { font-size: 16px; }
+header, main, footer, nav { max-width: 1120px; }
+header { display: flex; justify-content: space-between; align-items: end; gap: 28px; padding: 36px 24px 28px; }
+header > div:first-child { max-width: 850px; }
+h1 { font-size: clamp(2rem, 4.5vw, 3.5rem); line-height: 1.08; letter-spacing: -.04em; margin: 6px 0 16px; }
+.curso, .marcador { color: var(--destaque); font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin: 0 0 8px; }
+.intro { color: var(--mudo); max-width: 70ch; margin: 0 0 14px; }
+.metadados { color: var(--mudo); font-size: .82rem; margin-bottom: 0; }
+.valor { border: 1px solid var(--destaque); color: var(--destaque); padding: 12px 20px; text-align: center; flex-shrink: 0; }
+.valor b { display: block; font-size: 1.8rem; line-height: 1.2; }
+nav { display: flex; align-items: stretch; gap: 0; padding: 0; background: var(--cartao); border: 1px solid var(--borda); }
+nav a { display: flex; align-items: center; justify-content: center; gap: 7px; flex: 1 1 auto; padding: 12px 10px; color: var(--mudo); font-size: .78rem; border-right: 1px solid var(--borda); }
+nav a:last-child { border-right: 0; }
+nav a:hover, nav a:focus-visible { background: #e8f3ef; color: var(--destaque); }
+nav a b { display: inline-grid; place-items: center; width: 25px; height: 25px; border: 1px solid var(--borda); border-radius: 50%; color: var(--destaque); flex-shrink: 0; }
+main { padding: 24px 0 0; }
+main > section { padding: clamp(20px, 4vw, 38px); margin: 0 0 24px; background: var(--cartao); border: 1px solid var(--borda); min-width: 0; }
+h2 { font-size: clamp(1.4rem, 2.5vw, 1.9rem); line-height: 1.2; letter-spacing: -.02em; margin-bottom: 20px; }
+h3 { margin-top: 24px; }
+p, li { max-width: 90ch; }
+li { margin: 7px 0; }
+a { text-underline-offset: 3px; overflow-wrap: anywhere; }
+code { overflow-wrap: anywhere; }
+pre { padding: 16px; border-radius: 2px; font-size: .81rem; }
+.cartao, .agente { border-radius: 2px; background: #fafbf9; padding: 20px; }
+input, select, textarea, button { border-radius: 2px; }
+input, select, button { min-height: 44px; }
+textarea { resize: vertical; color: var(--texto); padding: 14px; }
+button { font-weight: 650; }
+button:hover { background: #e8f3ef; border-color: var(--destaque); }
+button.primario:hover { background: #075345; }
+:focus-visible { outline: 3px solid var(--destaque); outline-offset: 3px; }
+.campo-copia { grid-template-columns: 150px minmax(0, 1fr) auto; gap: 12px; margin: 16px 0; }
+.campo-copia pre { margin: 0; }
+th { font-size: .79rem; color: var(--mudo); }
+th, td { padding: 10px 12px; overflow-wrap: anywhere; }
+.alerta { padding: 14px 16px; border-radius: 0; }
+figure { margin: 24px 0 0; }
+figure img { display: block; border-radius: 2px; }
+figcaption { margin-top: 8px; }
+.formularios { display: flex; flex-wrap: wrap; gap: 12px; margin: 22px 0; }
+.botao-link { display: inline-block; padding: 10px 18px; background: var(--destaque); color: white; text-decoration: none; font-weight: 650; }
+.botao-link:hover { background: #075345; }
+#tabela-rodadas, #resultado { overflow-x: auto; }
+footer { padding: 0 24px 40px; }
+.pular { position: absolute; left: 16px; top: -80px; background: white; padding: 12px; z-index: 10; }
+.pular:focus { top: 12px; }
+@media (max-width: 1168px) { main, nav { margin-left: 24px; margin-right: 24px; } }
+@media (max-width: 850px) {
+  nav { flex-wrap: wrap; }
+  nav a { flex: 1 1 30%; border-bottom: 1px solid var(--borda); }
+  nav .atalho-reserva { flex-basis: 100%; }
+  html { scroll-padding-top: 170px; }
+}
+@media (max-width: 640px) {
+  header { padding: 24px 16px; align-items: start; }
+  h1 { font-size: 2.1rem; }
+  .valor { padding: 8px 12px; }
+  main, nav { margin-left: 12px; margin-right: 12px; }
+  main > section { padding: 20px 16px; }
+  .campo-copia { grid-template-columns: minmax(0, 1fr); }
+  .campo-copia button { justify-self: start; }
+  .linha > label { flex: 1 1 100%; margin-right: 0; }
+  input, select { max-width: 100%; }
+  .valor b { font-size: 1.4rem; }
+  table { font-size: .8rem; }
+  th, td { padding: 7px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

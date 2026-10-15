@@ -3,28 +3,36 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>A8. Processo de software nos agentes</title>
+  <title>Laboratório de processo com agentes</title>
+  <meta name="description" content="Atividade de Tecnologias Emergentes: configure os agentes spec, coder e tester no Dify e compare as rodadas no verificador.">
   <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
+<a class="pular" href="#cenario">Ir para a atividade</a>
 <header>
-  <h1>A8. Processo de software nos agentes</h1>
-  <p>Atividade individual de 15/10/2026, 0,5 ponto. Entrega no formulário da sua turma até o fim do encontro.</p>
+  <div>
+    <p class="curso">Tecnologias Emergentes · ESOFT8</p>
+    <h1>Laboratório de processo com agentes</h1>
+    <p class="intro">Transfira as regras de um projeto para os agentes, execute o workflow no Dify e compare os resultados antes e depois.</p>
+    <p class="metadados">A8 · Individual · 15/10/2026 · Entrega até o fim do encontro</p>
+  </div>
+  <div class="valor"><b>0,5</b>ponto</div>
 </header>
 
-<nav>
-  <a href="#cenario">1. Cenário</a>
-  <a href="#dify">2. Dify</a>
-  <a href="#base">3. Linha de base</a>
-  <a href="#transferir">4. Transferir o processo</a>
-  <a href="#verificador">Verificador</a>
-  <a href="#rodadas">5. Rodadas e entrega</a>
-  <a href="#reserva">Reserva sem Dify</a>
+<nav aria-label="Etapas da atividade">
+  <a href="#cenario"><b>1</b> Cenário</a>
+  <a href="#dify"><b>2</b> Dify</a>
+  <a href="#base"><b>3</b> Linha de base</a>
+  <a href="#transferir"><b>4</b> Alterar o processo</a>
+  <a href="#verificador"><b>✓</b> Verificador</a>
+  <a href="#rodadas"><b>5</b> Entrega</a>
+  <a href="#reserva" class="atalho-reserva">Reserva sem Dify</a>
 </nav>
 
 <main>
-<section>
-  <h2>Objetivo</h2>
+<section class="objetivo">
+  <p class="marcador">O que você vai investigar</p>
+  <h2>Regras do projeto, decisões dos agentes</h2>
   <p>Os agentes spec, coder e tester já estão montados em um workflow do Dify, com instruções genéricas. Cada cenário descreve um projeto com regras de processo próprias. Você transfere as regras do seu cenário para os agentes, executa o fluxo antes e depois da alteração e mostra, com o resultado do verificador, o efeito de cada mudança.</p>
   <p>O Dify só gera texto. Quem executa o código e os testes é o <a href="#verificador">verificador desta página</a>, que roda no seu navegador:</p>
   <ul>
@@ -35,6 +43,7 @@
 </section>
 
 <section id="cenario">
+  <p class="marcador">Seu projeto</p>
   <h2>1. Seu cenário</h2>
   <p>O cenário sai do último dígito do RA antes do hífen. RA 23182969-2 termina em 9 e fica com o cenário 2.</p>
   <label>RA <input id="ra" placeholder="23182969-2" autocomplete="off"></label>
@@ -42,6 +51,7 @@
 </section>
 
 <section id="dify">
+  <p class="marcador">Preparação · 15 min</p>
   <h2>2. Conta e workflow no Dify, 15 minutos</h2>
   <ol>
     <li>Abra <a href="https://cloud.dify.ai" target="_blank" rel="noopener">cloud.dify.ai</a> e entre com GitHub ou Google. O plano Sandbox é gratuito e não pede cartão.</li>
@@ -56,6 +66,7 @@
 </section>
 
 <section id="base">
+  <p class="marcador">Primeira execução · 15 min</p>
   <h2>3. Linha de base, 15 minutos</h2>
   <p>Execute sem alterar nada. Clique em <em>Executar</em> (Run) no Dify e preencha:</p>
   <div class="campo-copia"><span>Pedido</span><pre id="copia-pedido"></pre><button data-copiar="copia-pedido">Copiar</button></div>
@@ -68,6 +79,7 @@
 </section>
 
 <section id="transferir">
+  <p class="marcador">Alteração e comparação · 35 min</p>
   <h2>4. Transferir o processo, 35 minutos</h2>
   <p>Para cada regra do seu cenário, decida onde ela fica.</p>
   <table>
@@ -85,6 +97,7 @@
 </section>
 
 <section id="verificador">
+  <p class="marcador">Execução no navegador</p>
   <h2>Verificador</h2>
   <p>Cole o campo <code>entrega</code> da execução. O código do coder roda em um worker do navegador, com prazo de 5 segundos por suíte.</p>
   <div class="linha">
@@ -104,6 +117,7 @@
 </section>
 
 <section id="rodadas">
+  <p class="marcador">Registro e análise · 15 min</p>
   <h2>5. Rodadas e entrega, 15 minutos</h2>
   <p>As rodadas ficam guardadas neste navegador, separadas por RA. Repetir um rótulo substitui a rodada anterior com o mesmo rótulo.</p>
   <div id="tabela-rodadas"></div>
@@ -116,6 +130,10 @@
     <li>No Studio, exporte o workflow final (menu do app, <em>Exportar DSL</em>), suba o arquivo no Google Drive e libere leitura para <code>pedro.satin@unicesumar.edu.br</code>.</li>
     <li>Preencha o formulário da sua turma com o registro copiado acima, os trechos alterados e a análise.</li>
   </ol>
+  <div class="formularios" aria-label="Formulários de entrega">
+    
+    
+  </div>
   <h3>Critérios de correção</h3>
   <table>
     <thead><tr><th>Item</th><th>Valor</th></tr></thead>
@@ -130,6 +148,7 @@
 </section>
 
 <section id="reserva">
+  <p class="marcador">Alternativa em caso de falha</p>
   <h2>Reserva sem Dify</h2>
   <p>Use se a conta, o crédito ou o modelo do Dify falharem. Os prompts abaixo são os mesmos dos nós do workflow. Cole cada um em uma conversa nova do <a href="https://aistudio.google.com" target="_blank" rel="noopener">Google AI Studio</a> e cole a resposta de volta. Para transferir o processo, edite a instrução e marque os materiais de cada agente aqui na página.</p>
   <div id="reserva-agentes"></div>
