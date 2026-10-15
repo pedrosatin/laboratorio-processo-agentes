@@ -53,16 +53,20 @@
   <h3>4. Preencher o formulário</h3>
   <p>O Dify confere o domínio do e-mail antes de abrir o formulário. Com o domínio aceito, a página mostra "You are now eligible for Education Verified status".</p>
   <ul>
-    <li><em>Your School Name</em>: nome oficial e por extenso da instituição, sem sigla.</li>
+    <li><em>Your School Name</em>: digite <code>Cesumar</code> e escolha <code>UniCesumar</code> na lista que aparece.</li>
     <li><em>Your School Role</em>: <code>Student</code>.</li>
-    <li><em>Terms &amp; Agreements</em>: as três declarações dizem que você tem 18 anos ou mais, que está matriculado na instituição e que o benefício é de uso pessoal. Marque se forem verdadeiras e clique em <em>Submit</em>.</li>
+    <li><em>Terms &amp; Agreements</em>: as três declarações dizem que você tem 18 anos ou mais, que está matriculado na instituição e que o benefício é de uso pessoal. Marque se forem verdadeiras e clique em <em>Submit</em>, no fim da página.</li>
   </ul>
-  <p>Segundo a documentação do Dify, o resultado aparece na hora e o Dify pode pedir comprovante de matrícula.</p>
-  <figure><img src="evidencias/educacao-formulario.png" alt="Formulário Get Education Verified" loading="lazy"><figcaption>Formulário de verificação, aberto com a conta do professor. Na sua tela aparece o seu e-mail.</figcaption></figure>
+  <figure><img src="evidencias/educacao-preenchido.png" alt="Formulário preenchido com UniCesumar" loading="lazy"><figcaption>Formulário preenchido na conta do professor, por isso o papel é Teacher. O aluno marca Student.</figcaption></figure>
 
-  <h3>5. Aplicar o desconto ao workspace</h3>
-  <p>Depois da aprovação, volte a <em>Billing</em> e clique em <em>Use education discount</em>. O Dify abre o checkout do plano Professional anual com cupom de 100%, e o valor final fica zero. Conclua o checkout para ativar o plano no workspace.</p>
-  <div class="alerta">Esta etapa não foi testada na turma. Se o checkout pedir cartão de crédito, pare e avise o professor. A atividade não exige cadastro de cartão.</div>
+  <h3>5. Verificação aprovada</h3>
+  <p>A aprovação apareceu na mesma página, segundos depois do envio: "You've successfully applied for the education discount". Abaixo, o Dify pede o workspace que vai receber o desconto.</p>
+  <figure><img src="evidencias/educacao-aprovado.png" alt="Verificação aprovada" loading="lazy"><figcaption>Verificação aprovada, com a escolha do workspace e o botão Use education discount.</figcaption></figure>
+
+  <h3>6. Checkout do desconto, opcional</h3>
+  <p><em>Use education discount</em> abre o checkout do Stripe com o plano Professional anual, cupom de 100% e total de R$ 0,00. O checkout pede cartão de crédito mesmo com valor zero. A assinatura renova pelos termos do Stripe se não for cancelada.</p>
+  <figure><img src="evidencias/educacao-checkout.png" alt="Checkout do Stripe com total zero e pedido de cartão" loading="lazy"><figcaption>Checkout com total R$ 0,00 e campos de cartão. O código do cupom foi ocultado na imagem.</figcaption></figure>
+  <div class="alerta erro">Não cadastre cartão para a disciplina. Pare na etapa 5. A atividade usa o plano Sandbox, e a verificação não muda os créditos.</div>
 </section>
 
 <section id="problemas">
@@ -70,7 +74,7 @@
   <table>
     <thead><tr><th>Situação</th><th>O que fazer</th></tr></thead>
     <tbody>
-      <tr><td>A página diz que o e-mail não é elegível</td><td>Confira se a conta usa o e-mail institucional. O domínio <code>unicesumar.edu.br</code> passou na checagem automática. O domínio dos e-mails de aluno pode ser outro e não foi testado. Se for recusado, siga no plano Sandbox, que atende à atividade.</td></tr>
+      <tr><td>A página diz que o e-mail não é elegível</td><td>Confira se a conta usa o e-mail institucional. O domínio <code>unicesumar.edu.br</code> foi aprovado em 15/10/2026. O domínio dos e-mails de aluno pode ser outro e não foi testado. Se for recusado, siga no plano Sandbox, que atende à atividade.</td></tr>
       <tr><td>Pedido negado</td><td>O Dify recebe recurso pelo e-mail <code>support@dify.ai</code>, com o nome completo da instituição em inglês e o domínio do e-mail.</td></tr>
       <tr><td>Créditos acabaram</td><td>A verificação não repõe créditos. Use a reserva da página da atividade.</td></tr>
       <tr><td>Troca de e-mail da conta</td><td>O Dify pode revogar a verificação, e o e-mail novo não herda o status.</td></tr>
