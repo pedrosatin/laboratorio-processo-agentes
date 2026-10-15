@@ -104,12 +104,20 @@ const naFila = tarefa => {
   return proxima
 }
 
-// O Dify às vezes devolve o código sem `export` ou dentro de cerca Markdown.
-// O worker carrega o módulo por import(), então filtrarTarefas precisa ser exportada.
-const limparCodigo = codigoTs => String(codigoTs ?? '')
-  .replace(/```(?:typescript|ts|javascript|js)?\s*/gi, '')
-  .replace(/```/g, '')
-  .trim()
+// O Dify às vezes devolve o código sem `export`, dentro de cerca Markdown
+// ou com quebras de linha escapadas duas vezes ("\\n" literal). O worker
+// carrega o módulo por import(), então filtrarTarefas precisa ser exportada.
+const limparCodigo = codigoTs => {
+  let codigo = String(codigoTs ?? '')
+    .replace(/```(?:typescript|ts|javascript|js)?\s*/gi, '')
+    .replace(/```/g, '')
+    .trim()
+  // Escape duplo: uma linha só com sequências \n literais → newlines de verdade
+  if (!codigo.includes('\n') && /\\n/.test(codigo)) {
+    codigo = codigo.replace(/\\n/g, '\n').replace(/\\t/g, '\t').replace(/\\r/g, '\r')
+  }
+  return codigo
+}
 
 const garantirExportFiltrar = js => {
   if (/\bexport\s+(?:async\s+)?(?:function\s+filtrarTarefas\b|(?:const|let|var)\s+filtrarTarefas\b)/.test(js)) return js
