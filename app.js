@@ -196,8 +196,8 @@ const registro = () => {
 // Reserva: os mesmos prompts dos nós do workflow, montados na página
 const prompts = {
   spec: materiais => `Pedido:\n${dados.pedido}\n\nTipo existente: ${dados.tipoExistente}\n\nAssinatura obrigatória: ${dados.assinatura}\n\nEstados aceitos: todas, abertas, concluidas\n\nRespostas da pessoa responsável pelo pedido:\n${dados.respostas}${materiais}`,
-  coder: (materiais, spec) => `Especificação:\n${spec}\n\nTentativa: 0\n\nFalhas da tentativa anterior: nenhuma${materiais}`,
-  tester: (materiais, spec) => `Especificação:\n${spec}${materiais}`
+  coder: (materiais, spec) => `Tipo existente: ${dados.tipoExistente}\n\nAssinatura obrigatória: ${dados.assinatura}\n\nEspecificação:\n${spec}\n\nTentativa: 0\n\nFalhas da tentativa anterior: nenhuma${materiais}`,
+  tester: (materiais, spec) => `Tipo existente: ${dados.tipoExistente}\n\nAssinatura obrigatória: ${dados.assinatura}\n\nEspecificação:\n${spec}${materiais}`
 }
 
 const reservaGuardada = () => guardado('a8-reserva', { instrucoes: { ...dados.instrucoes }, materiais: { spec: [], coder: [], tester: [] }, respostas: {} })

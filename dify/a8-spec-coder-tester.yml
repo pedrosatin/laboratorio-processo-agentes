@@ -413,6 +413,10 @@ workflow:
             - id: tester-user
               role: user
               text: |-
+                Tipo existente: type Tarefa = { id: number, titulo: string, concluida: boolean }
+
+                Assinatura obrigatória: filtrarTarefas(tarefas: Tarefa[], filtro: { estado: string, termo?: string }): Tarefa[]
+
                 Especificação:
                 {{#ler_spec.spec#}}
           retry_config:
@@ -474,6 +478,10 @@ workflow:
             - id: coder-user
               role: user
               text: |-
+                Tipo existente: type Tarefa = { id: number, titulo: string, concluida: boolean }
+
+                Assinatura obrigatória: filtrarTarefas(tarefas: Tarefa[], filtro: { estado: string, termo?: string }): Tarefa[]
+
                 Especificação:
                 {{#ler_spec.spec#}}
 
